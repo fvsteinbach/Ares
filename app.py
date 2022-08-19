@@ -10,9 +10,20 @@ def index():
 def register():
     return render_template("register.html")
 
-@app.route("/registrants", methods=["GET", "POST"])
+@app.route("/error")
+def error():
+    return render_template("error.html")
+
+@app.route("/registrants", methods=["POST"])
 def registrants():
-    name = request.args.get("name")
+    #Validate name
+    name = request.form.get("name")
+    if not name:
+        return render_template("error.html", message="Missing name")
+    #Validate birthdate
+    birthdate = request.form.get("birthdate")
+    if not birthdate:
+        return render_template("error.html", message="Missing birthdate")
     return render_template("registrants.html", name=name)
 
 if __name__==("__main__"):
