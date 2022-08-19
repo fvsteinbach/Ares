@@ -1,20 +1,27 @@
-.vertical-menu {
-    width: 200px; /* Set a width if you like */
+@font-face {
+  font-family: "deToks";
+  src: url(/fonts/deToks.otf);
+}
+
+@font-face {
+  font-family: "Longhaul";
+  src: url(/fonts/Longhaul.ttf);
+}
+
+@font-face {
+  font-family: "Roboto-Black";
+  src: url(/fonts/Roboto-Black.ttf);
+}
+
+body {
+
+    background-color: #0000; /* Black background color */
+    font-family: Helvetica;
+
   }
-  
-  .vertical-menu a {
-    background-color: #eee; /* Grey background color */
-    color: black; /* Black text color */
-    display: block; /* Make the links appear below each other */
-    padding: 12px; /* Add some padding */
-    text-decoration: none; /* Remove underline from links */
-  }
-  
-  .vertical-menu a:hover {
-    background-color: #8e8dbe; /* Dark grey background on mouse-over */
-  }
-  
-  .vertical-menu a.active {
-    background-color: #4b0082; /* Add a green color to the "active/current" link */
-    color: white;
-  }
+
+h1 {
+
+  font-family: Roboto-Black;
+
+}
