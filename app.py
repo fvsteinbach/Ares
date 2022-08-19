@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from cs50 import SQL
+from datetime import date
 
 app = Flask(__name__)
 
@@ -24,10 +25,16 @@ def error():
 
 @app.route("/registrants", methods=["POST"])
 def registrants():
-    #Validate name
-    name = request.form.get("name")
-    if not name:
-        return render_template("error.html", message="Missing name")
+    #Validate first name
+    fname = request.form.get("fname")
+    if not fname:
+        return render_template("error.html", message="Missing first name")
+    
+    #Validate last name
+    lname = request.form.get("lname")
+    if not lname:
+        return render_template("error.html", message="Missing last name")
+        
     #Validate birthdate
     birthdate = request.form.get("birthdate")
     if not birthdate:
@@ -48,9 +55,26 @@ def registrants():
     if not email:
         return render_template("error.html", message="Missing email")
 
-    STUDENTS[name] = belt
+    #Validate phone
+    phone = request.form.get("phone")
+    if not phone:
+        return render_template("error.html", message="Missing phone")
 
-    return render_template("registrants.html", students=STUDENTS)
+    #Get student age
+    birthyear = int(birthdate[:4])
+    thisyear = date.today().year
+    age = thisyear - birthyear
+
+    #Remember student
+    db.execute("INSERT INTO students (fname, lname, belt, degree, age, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?)", fname, lname, belt, degree, age, phone, email)
+
+    #Confirm registration
+    return redirect ("/students")
+
+@app.route("/students")
+def students():
+    students = db.execute("SELECT * FROM students")
+    return render_template("students.html", students=students)
 
 if __name__==("__main__"):
     app.run()

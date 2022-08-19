@@ -3,7 +3,8 @@
 {% block body %}
 
     <form action="/registrants" method="post">
-        <input type="text" id="name" name="name" placeholder="Name"><br>
+        <input type="text" id="fname" name="fname" placeholder="First name"><br>
+        <input type="text" id="lname" name="lname" placeholder="Last name"><br>
         <input type="date" id="birthdate" name="birthdate" placeholder="birthdate"><br>
         <select name="belt">
             <option disabled selected>Your current belt</option>
@@ -18,6 +19,7 @@
             {% endfor %}
         </select><br>
         <input type="email" id="email" name="email" placeholder="The email you use on daily basis"><br>
+        <input type="tel" id="phone" name="phone" placeholder="phone"><br>
         <input type="submit" id="register" value="Register">
     </form>
     <a href="/"><button>Go home</button></a>
