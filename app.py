@@ -1,8 +1,11 @@
 from flask import Flask, request, render_template, redirect
+from cs50 import SQL
 
 app = Flask(__name__)
 
-fighters = {}
+db = SQL("sqlite:///students.db")
+
+STUDENTS = {}
 
 BELTS = ["No belt", "White", "Blue", "Purple", "Brown", "Black"]
 DEGREES = ["No degree","I", "II", "III", "IV"]
@@ -45,9 +48,9 @@ def registrants():
     if not email:
         return render_template("error.html", message="Missing email")
 
-    fighters[name] = belt
+    STUDENTS[name] = belt
 
-    return render_template("registrants.html", name=name)
+    return render_template("registrants.html", students=STUDENTS)
 
 if __name__==("__main__"):
     app.run()

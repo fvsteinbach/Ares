@@ -1,9 +1,24 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-    Hello, {{ name }}
+    <h1>All students</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Belt</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for name in students %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ students[name] }}<td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     
-    <a href="/"><button>Go home</button></a>
+    <br><a href="/"><button>Go home</button></a>
 
 {% endblock %}
