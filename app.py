@@ -13,7 +13,7 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    return render_template("register.html", belts=BELTS, degrees=DEGREES)
 
 @app.route("/error")
 def error():
@@ -44,7 +44,7 @@ def registrants():
     email = request.form.get("email")
     if not email:
         return render_template("error.html", message="Missing email")
-        
+
     fighters[name] = belt
 
     return render_template("registrants.html", name=name)

@@ -7,20 +7,15 @@
         <input type="date" id="birthdate" name="birthdate" placeholder="birthdate"><br>
         <select name="belt">
             <option disabled selected>Your current belt</option>
-            <option>No belt</option>
-            <option>White</option>
-            <option>Blue</option>
-            <option>Purple</option>
-            <option>Brown</option>
-            <option>Black</option>
+            {% for belt in belts %}
+                <option> {{ belt }} </option>
+            {% endfor %}
         </select>
         <select name="degree">
             <option disabled selected>Your belt degree</option>
-            <option>No degree</option>
-            <option>I</option>
-            <option>II</option>
-            <option>III</option>
-            <option>IV</option>
+            {% for degree in degrees %}
+                <option> {{ degree }} </option>
+            {% endfor %}
         </select><br>
         <input type="email" id="email" name="email" placeholder="The email you use on daily basis"><br>
         <input type="submit" id="register" value="Register">
