@@ -2,9 +2,12 @@
 
 {% block body %}
 
-    <form>
-        <input type="text" id="name" name="name">
+    <form action="/registrants">
+        <input type="text" id="name" name="name" placeholder="Name"><br>
+        <input type="date" id="birthdate" name="birthdate" placeholder="birthdate"><br>
+        <input type="text" id="belt" name="belt" placeholder="Current belt"><br>
         <input type="submit" id="register" value="Register">
     </form>
+    <a href="/"><button>Go home</button></a>
 
 {% endblock %}

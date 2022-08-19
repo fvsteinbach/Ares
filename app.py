@@ -10,5 +10,10 @@ def index():
 def register():
     return render_template("register.html")
 
+@app.route("/registrants", methods=["GET", "POST"])
+def registrants():
+    name = request.args.get("name")
+    return render_template("registrants.html", name=name)
+
 if __name__==("__main__"):
     app.run()
