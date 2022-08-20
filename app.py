@@ -76,5 +76,14 @@ def students():
     students = db.execute("SELECT * FROM students")
     return render_template("students.html", students=students)
 
+@app.route("/deregister", methods=["POST"])
+def deregister():
+    
+    #Delete student
+    id = request.form.get("id")
+    if id:
+        db.execute("DELETE FROM students WHERE id = ?", id)
+    return redirect("/students")
+
 if __name__==("__main__"):
     app.run()

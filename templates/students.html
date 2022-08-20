@@ -24,6 +24,12 @@
                     <td>{{ student["age"] }}</td>
                     <td>{{ student["phone"] }}</td>
                     <td>{{ student["email"] }}</td>
+                    <td>
+                        <form action="/deregister" method="post">
+                            <input name="id" type="hidden" value="{{ student["id"] }}">
+                            <input type="submit" value="Deregister">
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
