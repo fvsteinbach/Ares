@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session
 from cs50 import SQL
 from datetime import date
 
@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 db = SQL("sqlite:///students.db")
 
-STUDENTS = {}
 
 BELTS = ["No belt", "White", "Blue", "Purple", "Brown", "Black"]
 DEGREES = ["No degree","I", "II", "III", "IV"]
@@ -69,12 +68,17 @@ def registrants():
     db.execute("INSERT INTO students (fname, lname, belt, degree, age, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?)", fname, lname, belt, degree, age, phone, email)
 
     #Confirm registration
-    return redirect ("/students")
+    return redirect("/dashboard")
 
-@app.route("/students")
-def students():
+@app.route("/user", methods=["POST", "GET"])
+def user():
+    fname = request.form.get("fname")
+    return render_template("/user.html", fname=fname)
+
+@app.route("/dashboard")
+def dashboard():
     students = db.execute("SELECT * FROM students")
-    return render_template("students.html", students=students)
+    return render_template("dashboard.html", students=students)
 
 @app.route("/deregister", methods=["POST"])
 def deregister():
@@ -83,7 +87,7 @@ def deregister():
     id = request.form.get("id")
     if id:
         db.execute("DELETE FROM students WHERE id = ?", id)
-    return redirect("/students")
+    return redirect("/dashboard")
 
 if __name__==("__main__"):
     app.run()
