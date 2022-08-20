@@ -3,5 +3,9 @@
 {% block body %}
 
     <h1>Hello {{ fname }}</h1>
+    {% if not fname %}
+        You are not logged in
+        You should register first <a href="/register">Register</a>
+    {% endif %}
 
 {% endblock %}
