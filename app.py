@@ -55,7 +55,7 @@ def signup():
     username=form.username.data
     return render_template("signup.html", first_name=first_name, form=form, belt=belt, last_name=last_name, birthdate=birthdate, degree=degree, email=email, phone=phone, username=username)
 
-@app.route("/register", methods=["POST"])
+@app.route("/register", methods=["POST", "GET"])
 def register():
     form = register_form()
     first_name=form.first_name.data
