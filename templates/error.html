@@ -2,7 +2,18 @@
 
 {% block body %}
 
-    <h1>Error</h1>
-    {{ message }}
+<br>
+<div class="container w-25 p-3 shadow p-3 mb-5 bg-body rounded">
+    
+    <center>
 
+        <h1>Error</h1>
+
+        {{ message }} <br>
+
+        <br><a href="/"><button class='btn btn-outline-danger'>Go home</button></a>
+        <a href="/signup"><button class="btn btn-outline-danger">Try again</button></a>
+
+    </center>
+</div>
 {% endblock %}

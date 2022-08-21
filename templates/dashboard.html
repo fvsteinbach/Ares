@@ -1,40 +1,48 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <h1>All students</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Belt</th>
-                <th>Degree</th>
-                <th>Age</th>
-                <th>Phone</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student in students %}
+
+<div class="container shadow p-3 mb-5 bg-body rounded">
+    <h1>All Students</h1>
+        <table class="table">
+            <thead class="table-dark">
                 <tr>
-                    <td>{{ student["fname"] }}</td>
-                    <td>{{ student["lname"] }}</td>
-                    <td>{{ student["belt"] }}</td>
-                    <td>{{ student["degree"] }}</td>
-                    <td>{{ student["age"] }}</td>
-                    <td>{{ student["phone"] }}</td>
-                    <td>{{ student["email"] }}</td>
-                    <td>
-                        <form action="/deregister" method="post">
-                            <input name="id" type="hidden" value="{{ student["id"] }}">
-                            <input type="submit" value="Deregister">
-                        </form>
-                    </td>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Belt</th>
+                    <th>Degree</th>
+                    <th>birthdate</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Deregister</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user['first_name'] }}</td>
+                        <td>{{ user['last_name'] }}</td>
+                        <td>{{ user['belt'] }}</td>
+                        <td>{{ user['degree'] }}</td>
+                        <td>{{ user['birthdate'] }}</td>
+                        <td>{{ user['phone'] }}</td>
+                        <td>{{ user['email'] }}</td>
+                        <td>{{ user['username'] }}</td>
+                        <td>                      
+                            <form action="/deregister" method="post">
+                                <input name="id" type="hidden" value="{{ user['id'] }}">
+                                <button class="btn btn-danger" type="submit" value="Deregister">Deregister</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+
+<center>
     <br><a href="/"><button>Go home</button></a>
+</center>
 
 {% endblock %}

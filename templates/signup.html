@@ -2,12 +2,10 @@
 
 {% block body %}
 
-
-    <br/>
-    <center><h1>SIGNUP</h1></center>
-
-    <div class="container-sm">
-        <form method="POST" action="/profile" id="register_form">
+    <br>
+    <div class="container w-25 p-3 shadow p-3 mb-5 bg-body rounded">
+        <br/> <center><h1>SIGNUP</h1></center>
+        <form method="POST" action="/register" id="register_form">
 
             {{ form.hidden_tag() }}
 
@@ -16,6 +14,9 @@
             <br>
             {{ form.last_name.label(class="form-label") }}
             {{ form.last_name(class="form-control") }}
+            <br>
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
             <br>
             {{ form.birthdate.label(class="form-label") }}
             {{ form.birthdate(class="form-control") }}
@@ -31,9 +32,6 @@
             <br>
             {{ form.phone.label(class="form-label") }}
             {{ form.phone(class="form-control") }}
-            <br>
-            {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control") }}
 
             <br/>
             <center>

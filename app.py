@@ -5,39 +5,21 @@ from wtforms import StringField, PasswordField, SubmitField, EmailField, TelFiel
 from wtforms.validators import data_required,input_required
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from cs50 import SQL
+
+BELTS = ["No belt", "White", "Blue", "Purple", "Brown", "Black"]
+DEGREES = ["No degree","I", "II", "III", "IV"]
 
 #Configure app
 app = Flask(__name__)
 #Configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQL('sqlite:///database.db')
 #Configure session
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 #Secret key
 app.config["SECRET_KEY"] = "fuckthissecretkey"
 Session(app)
-
-#Initiate database
-db = SQLAlchemy(app)
-
-#Create model
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    belt = db.Column(db.String, nullable=False)
-    degree = db.Column()
-    email = db.Column()
-    phone = db.Column()
-    username = db.Column()
-    submit = db.Column()
-    date_added = db.Column()
-
-
-BELTS = ["No belt", "White", "Blue", "Purple", "Brown", "Black"]
-DEGREES = ["No degree","I", "II", "III", "IV"]
-
 
 #Create a Form class
 class register_form(FlaskForm):
@@ -48,7 +30,7 @@ class register_form(FlaskForm):
     degree = SelectField("What is your current belt?", choices=["No degree","I", "II", "III", "IV"], validators=[data_required()])
     email = EmailField("What is your email?", validators=[data_required()])
     phone = TelField("What is your phone number?", validators=[data_required()])
-    username = StringField("Create an Username?", validators=[data_required()])
+    username = StringField("Create an Username", validators=[data_required()])
     submit = SubmitField("Register")
 
 
@@ -60,43 +42,55 @@ def index():
 def login():
     return render_template("login.html")
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    return render_template("register.html", belts=BELTS, degrees=DEGREES)
-
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
-    first_name = None
-    last_name = None
-    birthdate = None
-    belt = None
-    degree = None
-    email = None
-    phone = None
-    username = None
     form = register_form()
-        
-    return render_template("signup.html",first_name=first_name, form=form, belt=belt, last_name=last_name, birthdate=birthdate, degree=degree, email=email, phone=phone, username=username)
+    first_name=form.first_name.data
+    last_name=form.last_name.data 
+    birthdate=form.birthdate.data
+    belt=form.belt.data
+    degree=form.degree.data
+    email=form.email.data
+    phone=form.phone.data
+    username=form.username.data
+    return render_template("signup.html", first_name=first_name, form=form, belt=belt, last_name=last_name, birthdate=birthdate, degree=degree, email=email, phone=phone, username=username)
+
+@app.route("/register", methods=["POST"])
+def register():
+    form = register_form()
+    first_name=form.first_name.data
+    last_name=form.last_name.data 
+    birthdate=form.birthdate.data
+    belt=form.belt.data
+    degree=form.degree.data
+    email=form.email.data
+    phone=form.phone.data
+    username=form.username.data
+    date_added = datetime.today()
+    username_validation = db.execute("SELECT * FROM Users WHERE username == ?", username)
+    if username_validation == []:
+        email_validation = db.execute("SELECT * FROM Users WHERE email = ?", email)
+        if email_validation == []:
+            db.execute("INSERT INTO Users (first_name, last_name, birthdate, belt, degree, email, phone, username, date_added) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", first_name, last_name, birthdate, belt, degree, email, phone, username, date_added)
+            flash("User added successfully")
+            return redirect("/profile")
+        return render_template("error.html", message="Email already been used")
+    return render_template("error.html", message='Username already been used')
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
     flash("Form submited successfully!")
-    return render_template("profile.html")
+    form = register_form()
+    return render_template("profile.html", form=form)
 
 @app.route("/error")
 def error():
     return render_template("error.html")
 
-@app.route("/user", methods=["POST", "GET"])
-def user():
-    return render_template("/user.html")
-
 @app.route("/dashboard")
 def dashboard():
-    if not session.get("fname"):   
-        return redirect("/register")
-    students = db.execute("SELECT * FROM students")
-    return render_template("dashboard.html", students=students)
+    users = db.execute("SELECT * FROM Users")
+    return render_template("dashboard.html", users=users)
 
 @app.route("/deregister", methods=["POST"])
 def deregister():
@@ -104,7 +98,7 @@ def deregister():
     #Delete student
     id = request.form.get("id")
     if id:
-        db.execute("DELETE FROM students WHERE id = ?", id)
+        db.execute("DELETE FROM users WHERE id = ?", id)
     return redirect("/dashboard")
 
 if __name__==("__main__"):
