@@ -2,6 +2,24 @@
 
 {% block body %}
 
-    <h1>SIGNUP</h1>
+    <br/>
+    <center><h1>SIGNUP</h1></center>
+
+    <div class="container-sm">
+        <form method="POST" action="/profile" id="register_form">
+
+            {{ form.hidden_tag() }}
+
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+            <br/>
+            <center>
+                {{ form.submit(class="btn btn-primary") }}
+            </center>
+
+        </form>
+    </div>
+
+
 
 {% endblock %}
