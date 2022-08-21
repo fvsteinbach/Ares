@@ -2,6 +2,7 @@
 
 {% block body %}
 
+
     <br/>
     <center><h1>SIGNUP</h1></center>
 
@@ -10,8 +11,30 @@
 
             {{ form.hidden_tag() }}
 
-            {{ form.name.label(class="form-label") }}
-            {{ form.name(class="form-control") }}
+            {{ form.first_name.label(class="form-label") }}
+            {{ form.first_name(class="form-control") }}
+            <br>
+            {{ form.last_name.label(class="form-label") }}
+            {{ form.last_name(class="form-control") }}
+            <br>
+            {{ form.birthdate.label(class="form-label") }}
+            {{ form.birthdate(class="form-control") }}
+            <br>
+            {{ form.belt.label(class="form-label") }}
+            {{ form.belt(class="form-control") }}
+            <br>
+            {{ form.degree.label(class="form-label") }}
+            {{ form.degree(class="form-control") }}
+            <br>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            <br>
+            {{ form.phone.label(class="form-label") }}
+            {{ form.phone(class="form-control") }}
+            <br>
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+
             <br/>
             <center>
                 {{ form.submit(class="btn btn-primary") }}
