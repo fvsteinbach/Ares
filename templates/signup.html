@@ -18,6 +18,9 @@
             {{ form.username.label(class="form-label") }}
             {{ form.username(class="form-control") }}
             <br>
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+            <br>
             {{ form.birthdate.label(class="form-label") }}
             {{ form.birthdate(class="form-control") }}
             <br>
@@ -37,9 +40,15 @@
             <center>
                 {{ form.submit(class="btn btn-primary") }}
             </center>
+            </form>
 
-        </form>
-    </div>
+            <center>
+                <br/><a href="/login"> <button class="btn btn-primary">Login</button> </a>
+            </center>
+        
+        </div>
+
+
 
 
 

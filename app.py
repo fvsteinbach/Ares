@@ -31,6 +31,7 @@ class register_form(FlaskForm):
     email = EmailField("What is your email?", validators=[data_required()])
     phone = TelField("What is your phone number?", validators=[data_required()])
     username = StringField("Create an Username", validators=[data_required()])
+    password = PasswordField("Enter your password", validators=[data_required()])
     submit = SubmitField("Register")
 
 
@@ -53,6 +54,7 @@ def signup():
     email=form.email.data
     phone=form.phone.data
     username=form.username.data
+    password = form.password.data
     return render_template("signup.html", first_name=first_name, form=form, belt=belt, last_name=last_name, birthdate=birthdate, degree=degree, email=email, phone=phone, username=username)
 
 @app.route("/register", methods=["POST", "GET"])
@@ -66,6 +68,7 @@ def register():
     email=form.email.data
     phone=form.phone.data
     username=form.username.data
+    password = form.password.data
     date_added = datetime.today()
     username_validation = db.execute("SELECT * FROM Users WHERE username == ?", username)
     if username_validation == []:
