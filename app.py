@@ -6,6 +6,7 @@ from wtforms.validators import data_required,input_required
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from cs50 import SQL
+from werkzeug.security import generate_password_hash, check_password_hash
 
 BELTS = ["No belt", "White", "Blue", "Purple", "Brown", "Black"]
 DEGREES = ["No degree","I", "II", "III", "IV"]
