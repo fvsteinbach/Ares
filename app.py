@@ -1,3 +1,6 @@
+from email.policy import default
+from enum import unique
+from inspect import Attribute
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -13,14 +16,31 @@ DEGREES = ["No degree","I", "II", "III", "IV"]
 
 #Configure app
 app = Flask(__name__)
-#Configure database
-db = SQL('sqlite:///database.db')
-#Configure session
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+#Add database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 #Secret key
 app.config["SECRET_KEY"] = "fuckthissecretkey"
-Session(app)
+#Initialize the database
+db = SQLAlchemy(app)
+
+#Create a model
+class users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    birthdate = db.Column(db.DateTime, nullable=False)
+    belt = db.Column(db.String(50), nullable=False)
+    degree = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    phone = db.Column(db.String(50), nullable=False)
+    username =  db.Column(db.String(25), nullable=False, unique=True)
+    password = db.Column(db.String(), nullable=False)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    #Create a string
+    def __repr__(self) -> str:
+        return super().__repr__()
+
 
 #Create a Form class
 class register_form(FlaskForm):
@@ -61,25 +81,37 @@ def signup():
 @app.route("/register", methods=["POST", "GET"])
 def register():
     form = register_form()
-    first_name=form.first_name.data
-    last_name=form.last_name.data 
-    birthdate=form.birthdate.data
-    belt=form.belt.data
-    degree=form.degree.data
-    email=form.email.data
-    phone=form.phone.data
-    username=form.username.data
-    password = form.password.data
-    date_added = datetime.today()
-    username_validation = db.execute("SELECT * FROM Users WHERE username == ?", username)
-    if username_validation == []:
-        email_validation = db.execute("SELECT * FROM Users WHERE email = ?", email)
-        if email_validation == []:
-            db.execute("INSERT INTO Users (first_name, last_name, birthdate, belt, degree, email, phone, username, date_added) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", first_name, last_name, birthdate, belt, degree, email, phone, username, date_added)
-            flash("User added successfully")
-            return redirect("/profile")
-        return render_template("error.html", message="Email already been used")
-    return render_template("error.html", message='Username already been used')
+    first_name = None
+    if form.validate_on_submit():
+        first_name=form.first_name.data
+        last_name=form.last_name.data 
+        birthdate=form.birthdate.data
+        belt=form.belt.data
+        degree=form.degree.data
+        email=form.email.data
+        phone=form.phone.data
+        username=form.username.data
+        password = form.password.data
+        date_added = datetime.today()
+        user_email = users.query.filter_by(email=email)
+        user_username = users.query.filter_by(username=username)
+        user_password = users.query.filter_by(password=password)
+        if user_email is None and user_username is None and user_password is None:
+            user = users(first_name, last_name, birthdate, belt, degree, email, phone, username, password, date_added)
+            db.session.add(user)
+            db.commit()
+        form.first_name.data = ''
+        form.last_name.data  = ''
+        form.birthdate.data = ''
+        form.belt.data = ''
+        form.degree.data = ''
+        form.email.data = ''
+        form.phone.data = ''
+        form.username.data = ''
+        form.password.data = ''
+        flash("User created successfully")
+    our_users = users.query.order_by(users.date_added)   
+    return redirect("/profile")
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
@@ -93,8 +125,9 @@ def error():
 
 @app.route("/dashboard")
 def dashboard():
-    users = db.execute("SELECT * FROM Users")
-    return render_template("dashboard.html", users=users)
+    our_users = users.query.order_by(users.date_added)
+    print(our_users)
+    return render_template("dashboard.html", our_users=our_users)
 
 @app.route("/deregister", methods=["POST"])
 def deregister():

@@ -19,19 +19,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user in users %}
+                {% for user in our_users %}
                     <tr>
-                        <td>{{ user['first_name'] }}</td>
-                        <td>{{ user['last_name'] }}</td>
-                        <td>{{ user['belt'] }}</td>
-                        <td>{{ user['degree'] }}</td>
-                        <td>{{ user['birthdate'] }}</td>
-                        <td>{{ user['phone'] }}</td>
-                        <td>{{ user['email'] }}</td>
-                        <td>{{ user['username'] }}</td>
+                        <td>{{ our_users.first_name }}</td>
+                        <td>{{ our_users.last_name }}</td>
+                        <td>{{ our_users.belt }}</td>
+                        <td>{{ our_users.degree }}</td>
+                        <td>{{ our_users.birthdate }}</td>
+                        <td>{{ our_users.phone }}</td>
+                        <td>{{ our_users.email }}</td>
+                        <td>{{ our_users.username }}</td>
                         <td>                      
                             <form action="/deregister" method="post">
-                                <input name="id" type="hidden" value="{{ user['id'] }}">
+                                <input name="id" type="hidden" value="{{ user.id }}">
                                 <button class="btn btn-danger" type="submit" value="Deregister">Deregister</button>
                             </form>
                         </td>
