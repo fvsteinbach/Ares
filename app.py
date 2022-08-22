@@ -93,13 +93,9 @@ def register():
         username=form.username.data
         password = form.password.data
         date_added = datetime.today()
-        user_email = users.query.filter_by(email=email)
-        user_username = users.query.filter_by(username=username)
-        user_password = users.query.filter_by(password=password)
-        if user_email is None and user_username is None and user_password is None:
-            user = users(first_name, last_name, birthdate, belt, degree, email, phone, username, password, date_added)
-            db.session.add(user)
-            db.commit()
+        user = users(first_name=first_name, last_name=last_name, birthdate=birthdate, belt=belt, degree=degree, email=email, phone=phone, username=username, password=password, date_added=date_added)
+        db.session.add(user)
+        db.session.commit()
         form.first_name.data = ''
         form.last_name.data  = ''
         form.birthdate.data = ''
@@ -110,7 +106,9 @@ def register():
         form.username.data = ''
         form.password.data = ''
         flash("User created successfully")
-    our_users = users.query.order_by(users.date_added)   
+        our_users = users.query.order_by(users.date_added)   
+        print(user)
+        print(our_users)
     return redirect("/profile")
 
 @app.route("/profile", methods=["POST", "GET"])
