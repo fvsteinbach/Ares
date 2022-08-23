@@ -1,6 +1,3 @@
-from email.policy import default
-from enum import unique
-from inspect import Attribute
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -28,14 +25,14 @@ class users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
-    birthdate = db.Column(db.DateTime, nullable=False)
+    birthdate = db.Column(db.Date, nullable=False)
     belt = db.Column(db.String(50), nullable=False)
     degree = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     phone = db.Column(db.String(50), nullable=False)
     username =  db.Column(db.String(25), nullable=False, unique=True)
     password = db.Column(db.String(), nullable=False)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    date_added = db.Column(db.Date, default=datetime.utcnow)
     
     #Create a string
     def __repr__(self) -> str:
@@ -127,14 +124,16 @@ def dashboard():
     print(our_users)
     return render_template("dashboard.html", our_users=our_users)
 
-@app.route("/deregister", methods=["POST"])
-def deregister():
-    
-    #Delete student
-    id = request.form.get("id")
-    if id:
-        db.execute("DELETE FROM users WHERE id = ?", id)
-    return redirect("/dashboard")
+@app.route("/deregister/<int:id>", methods=["POST", "GET"])
+def deregister(id):
+    form = register_form()
+    name_to_delete = users.query.get_or_404(id)
+    if request.method == "POST":
+        #Delete student
+        id = request.form.get("id")
+        if id:
+            db.execute("DELETE FROM users WHERE id = ?", id)
+        return redirect("/dashboard")
 
 if __name__==("__main__"):
     app.run()
