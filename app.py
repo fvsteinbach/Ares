@@ -73,9 +73,29 @@ def signup():
 def register():
     form = register_form()
     if form.validate_on_submit():
+<<<<<<< HEAD
         user = users(first_name=form.first_name.data, last_name=form.last_name.data, username=form.username.data, password=form.password.data, birthdate=form.birthdate.data, belt=form.belt.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, date_added=datetime.date().today())
         db.session.add(user)
         db.session.commit()
+=======
+        first_name=form.first_name.data
+        last_name=form.last_name.data 
+        birthdate=form.birthdate.data
+        belt=form.belt.data
+        degree=form.degree.data
+        email=form.email.data
+        phone=form.phone.data
+        username=form.username.data
+        password = form.password.data
+        date_added = datetime.today()
+        user_email = users.query.filter_by(email=email)
+        user_username = users.query.filter_by(username=username)
+        user_password = users.query.filter_by(password=password)
+        if user_email is None and user_username is None and user_password is None:
+            user = users(first_name, last_name, birthdate, belt, degree, email, phone, username, password, date_added)
+            db.session.add(user)
+            db.commit()
+>>>>>>> parent of 25d442a (Updated database)
         form.first_name.data = ''
         form.last_name.data  = ''
         form.birthdate.data = ''
@@ -86,8 +106,13 @@ def register():
         form.username.data = ''
         form.password.data = ''
         flash("User created successfully")
+<<<<<<< HEAD
         users = users.query.order_by(users.date_added)   
     return redirect("/profile", users=users)
+=======
+    our_users = users.query.order_by(users.date_added)   
+    return redirect("/profile")
+>>>>>>> parent of 25d442a (Updated database)
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
