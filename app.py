@@ -1,6 +1,3 @@
-from email.policy import default
-from enum import unique
-from inspect import Attribute
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -81,7 +78,6 @@ def signup():
 @app.route("/register", methods=["POST", "GET"])
 def register():
     form = register_form()
-    first_name = None
     if form.validate_on_submit():
         first_name=form.first_name.data
         last_name=form.last_name.data 
@@ -123,7 +119,6 @@ def error():
 @app.route("/dashboard")
 def dashboard():
     our_users = users.query.order_by(users.date_added)
-    print(our_users)
     return render_template("dashboard.html", our_users=our_users)
 
 @app.route("/deregister", methods=["POST"])
