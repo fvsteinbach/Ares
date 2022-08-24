@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <br>
+    <div class="container w-25 p-3 shadow p-3 mb-5 bg-body rounded">
+        <br/> <center><h1>Update user</h1></center>
+        <form action="/update/{{ name_update.id }}" method="POST" >
+
+            {{ form.hidden_tag() }}
+
+            {{ form.first_name.label(class="form-label") }}
+            {{ form.first_name(class="form-control", value=name_update.first_name) }}
+            <br>
+            {{ form.last_name.label(class="form-label") }}
+            {{ form.last_name(class="form-control", value=name_update.last_name) }}
+            <br>
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", value=name_update.username) }}
+            <br>
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", value=name_update.password) }}
+            <br>
+            {{ form.birthdate.label(class="form-label") }}
+            {{ form.birthdate(class="form-control", value=name_update.birthdate) }}
+            <br>
+            {{ form.belt.label(class="form-label") }}
+            {{ form.belt(class="form-control", value=name_update.belt) }}
+            <br>
+            {{ form.degree.label(class="form-label") }}
+            {{ form.degree(class="form-control", value=name_update.degree) }}
+            <br>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", value=name_update.email) }}
+            <br>
+            {{ form.phone.label(class="form-label") }}
+            {{ form.phone(class="form-control", value=name_update.phone) }}
+
+            <br/>
+            <center>
+                {{ form.update(class="btn btn-primary") }}
+            </center>
+            </form>
+
+            <center>
+                <br/><a href="/login"> <button class="btn btn-primary">Login</button> </a>
+            </center>
+        
+        </div>
+
+
+
+
+
+{% endblock %}

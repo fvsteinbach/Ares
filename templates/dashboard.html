@@ -10,12 +10,12 @@
                 <tr>
                     <th>First name</th>
                     <th>Last name</th>
+                    <th>Username</th>
                     <th>Belt</th>
                     <th>Degree</th>
-                    <th>birthdate</th>
                     <th>Phone</th>
                     <th>Email</th>
-                    <th>Username</th>
+                    <th>birthdate</th>
                     <th>Deregister</th>
                 </tr>
             </thead>
@@ -24,12 +24,12 @@
                     <tr>
                         <td>{{ user.first_name }}</td>
                         <td>{{ user.last_name }}</td>
+                        <td><a href="{{ url_for('update', id=user.id) }}">{{ user.username }}</a></td>
                         <td>{{ user.belt }}</td>
                         <td>{{ user.degree }}</td>
-                        <td>{{ user.birthdate }}</td>
                         <td>{{ user.phone }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.username }}</td>
+                        <td>{{ user.birthdate }}</td>
                         <td>                      
                             <form action="/deregister" method="post">
                                 <input name="id" type="hidden" value="{{ our_users[user.id] }}">
