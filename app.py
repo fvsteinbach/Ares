@@ -70,17 +70,9 @@ def signup():
 def register():
     form = register_form()
     if form.validate_on_submit():
-        first_name=form.first_name.data
-        last_name=form.last_name.data 
-        birthdate=form.birthdate.data
-        belt=form.belt.data
-        degree=form.degree.data
-        email=form.email.data
-        phone=form.phone.data
-        username=form.username.data
         password = form.password.data
         date_added = date.today()
-        user = users(first_name=first_name, last_name=last_name, birthdate=birthdate, belt=belt, degree=degree, email=email, phone=phone, username=username, password=password, date_added=date_added)
+        user = users(first_name=form.first_name.data, last_name=form.last_name.data, birthdate=form.birthdate.data, belt=form.belt.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data, password=password, date_added=date_added)
         db.session.add(user)
         db.session.commit()
         form.first_name.data = ''
