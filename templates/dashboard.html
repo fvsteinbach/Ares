@@ -16,6 +16,7 @@
                     <th>Email</th>
                     <th>Username</th>
                     <th>Deregister</th>
+                    <th>Update</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,12 @@
                             <form action="/deregister" method="post">
                                 <input name="id" type="hidden" value="{{ user.id }}">
                                 <button class="btn btn-danger" type="submit" value="Deregister">Deregister</button>
+                            </form>
+                        </td>
+                        <td>                      
+                            <form action="/update/id" method="post">
+                                <input name="id" type="hidden" value="{{ user.id }}">
+                                <button class="btn btn-warning" type="submit" value="Deregister">Update</button>
                             </form>
                         </td>
                     </tr>

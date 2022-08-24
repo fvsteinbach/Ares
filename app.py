@@ -64,16 +64,7 @@ def login():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     form = register_form()
-    first_name=form.first_name.data
-    last_name=form.last_name.data 
-    birthdate=form.birthdate.data
-    belt=form.belt.data
-    degree=form.degree.data
-    email=form.email.data
-    phone=form.phone.data
-    username=form.username.data
-    password = form.password.data
-    return render_template("signup.html", first_name=first_name, form=form, belt=belt, last_name=last_name, birthdate=birthdate, degree=degree, email=email, phone=phone, username=username)
+    return render_template("signup.html", first_name=form.first_name.data, form=form, belt=form.belt.data, last_name=form.last_name.data, birthdate=form.birthdate.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data)
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
