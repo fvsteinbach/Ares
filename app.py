@@ -28,14 +28,14 @@ class users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
-    birthdate = db.Column(db.DateTime, nullable=False)
+    birthdate = db.Column(db.Date, nullable=False)
     belt = db.Column(db.String(50), nullable=False)
     degree = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
     phone = db.Column(db.String(50), nullable=False)
     username =  db.Column(db.String(25), nullable=False, unique=True)
     password = db.Column(db.String(), nullable=False)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    date_added = db.Column(db.Date, default=datetime.utcnow)
     
     #Create a string
     def __repr__(self) -> str:
@@ -92,14 +92,10 @@ def register():
         phone=form.phone.data
         username=form.username.data
         password = form.password.data
-        date_added = datetime.today()
-        user_email = users.query.filter_by(email=email)
-        user_username = users.query.filter_by(username=username)
-        user_password = users.query.filter_by(password=password)
-        if user_email is None and user_username is None and user_password is None:
-            user = users(first_name, last_name, birthdate, belt, degree, email, phone, username, password, date_added)
-            db.session.add(user)
-            db.commit()
+        date_added = date.today()
+        user = users(first_name=first_name, last_name=last_name, birthdate=birthdate, belt=belt, degree=degree, email=email, phone=phone, username=username, password=password, date_added=date_added)
+        db.session.add(user)
+        db.session.commit()
         form.first_name.data = ''
         form.last_name.data  = ''
         form.birthdate.data = ''
@@ -110,8 +106,9 @@ def register():
         form.username.data = ''
         form.password.data = ''
         flash("User created successfully")
+        return redirect("/dashboard")
     our_users = users.query.order_by(users.date_added)   
-    return redirect("/profile")
+    return redirect("/dashboard", our_users)
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
@@ -130,10 +127,9 @@ def dashboard():
     return render_template("dashboard.html", our_users=our_users)
 
 @app.route("/deregister", methods=["POST"])
-def deregister():
-    
+def deregister(id):
     #Delete student
-    id = request.form.get("id")
+    id = users.query.get(id)
     if id:
         db.execute("DELETE FROM users WHERE id = ?", id)
     return redirect("/dashboard")
