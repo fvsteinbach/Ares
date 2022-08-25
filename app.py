@@ -1,3 +1,4 @@
+from inspect import Attribute
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -31,7 +32,21 @@ class users(db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     phone = db.Column(db.String(50), nullable=False)
     username =  db.Column(db.String(25), nullable=False, unique=True)
-    password = db.Column(db.String(), nullable=False)
+    #Hashing password
+    password_hash = db.Column(db.String(), nullable=False)
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute!')
+    
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+
+
     date_added = db.Column(db.Date, default=datetime.utcnow)
     
     #Create a string
