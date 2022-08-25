@@ -95,6 +95,29 @@ def profile():
     form = register_form()
     return render_template("profile.html", form=form)
 
+@app.route("/update/<int:id>", methods=['POST', 'GET'])
+def update(id):
+    form = register_form()
+    name_update = users.query.get_or_404(id)
+    if request.method == 'POST':
+        name_update.first_name = request.form['first_name']
+        name_update.last_name = request.form['last_name']
+        name_update.birthdate = request.form['birthdate']
+        name_update.belt = request.form['belt']
+        name_update.degree = request.form['degree']
+        name_update.email = request.form['email']
+        name_update.phone = request.form['phone']
+        name_update.username = request.form['username']
+        name_update.password = request.form['password']
+        try:
+            db.session.commit()
+            flash("User updated successfully!")
+            return render_template("update.html", form=form, name_update=name_update)
+        except:
+            flash("Error! Looks like there was a problem")
+            return render_template("update.html", form=form, name_update=name_update)
+    return render_template("update.html", form=form, name_update=name_update)
+
 @app.route("/error")
 def error():
     return render_template("error.html")
