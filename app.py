@@ -117,7 +117,7 @@ def update(id):
         except:
             flash("Error! Looks like there was a problem")
             return render_template("update.html", form=form, name_update=name_update)
-    return render_template("update.html", form=form, name_update=name_update)
+    return redirect("/signup")
 
 @app.route("/error")
 def error():
@@ -128,7 +128,7 @@ def dashboard():
     our_users = users.query.order_by(users.date_added)
     return render_template("dashboard.html", our_users=our_users)
 
-@app.route("/deregister", methods=["POST"])
+@app.route("/deregister/<int:id>", methods=["POST"])
 def deregister(id):
     #Delete student
     id = users.query.get(id)
