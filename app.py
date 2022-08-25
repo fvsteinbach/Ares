@@ -81,17 +81,23 @@ def login():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     form = register_form()
-    return render_template("signup.html", first_name=form.first_name.data, form=form, belt=form.belt.data, last_name=form.last_name.data, birthdate=form.birthdate.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data)
+    return render_template("signup.html", first_name=form.first_name.data, form=form, belt=form.belt.data, last_name=form.last_name.data, birthdate=form.birthdate.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data, password_hash=form.password_hash.data)
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
+    first_name = None
     form = register_form()
     if form.validate_on_submit():
-        password = form.password.data
-        date_added = date.today()
-        user = users(first_name=form.first_name.data, last_name=form.last_name.data, birthdate=form.birthdate.data, belt=form.belt.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data, password=password, date_added=date_added)
-        db.session.add(user)
-        db.session.commit()
+        user = users.query.filter_by(email=form.email.data, username=form.username.data, phone=form.phone.data).first()
+        if user is None:
+            #Hash the password
+            hashed_pw = generate_password_hash(form.password_hash.data, 'sha256')
+            user = users(first_name=form.first_name.data, last_name=form.last_name.data, birthdate=form.birthdate.data, belt=form.belt.data,
+            degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data, password_hash=hashed_pw, date_added=date.today())
+            db.session.add(user)
+            db.session.commit()
+            print(hashed_pw)
+        first_name = form.first_name.data
         form.first_name.data = ''
         form.last_name.data  = ''
         form.birthdate.data = ''
@@ -100,9 +106,10 @@ def register():
         form.email.data = ''
         form.phone.data = ''
         form.username.data = ''
-        form.password.data = ''
+        form.password_hash.data = ''
+        form.password_hash_val.data = ''
         flash("User created successfully")
-        return redirect("/dashboard")
+        return render_template("profile.html", form=form, user=user, first_name=first_name)
     our_users = users.query.order_by(users.date_added)   
     return redirect("/dashboard", our_users)
 
@@ -126,7 +133,8 @@ def update(id):
         name_update.email = request.form['email']
         name_update.phone = request.form['phone']
         name_update.username = request.form['username']
-        name_update.password = request.form['password']
+        hashed_pw = generate_password_hash(request.form['password_hash'], 'sha256')
+        name_update.password_hash = hashed_pw
         try:
             db.session.commit()
             flash("User updated successfully!")

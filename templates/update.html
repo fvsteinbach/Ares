@@ -18,8 +18,11 @@
             {{ form.username.label(class="form-label") }}
             {{ form.username(class="form-control", value=name_update.username) }}
             <br>
-            {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control", value=name_update.password) }}
+            {{ form.password_hash.label(class="form-label") }}
+            {{ form.password_hash(class="form-control", value=name_update.password_hash) }}
+            <br>
+            {{ form.password_hash_val.label(class="form-label") }}  
+            {{ form.password_hash_val(class="form-control", value=name_update.password_hash) }}
             <br>
             {{ form.birthdate.label(class="form-label") }}
             {{ form.birthdate(class="form-control", value=name_update.birthdate) }}
