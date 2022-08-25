@@ -1,9 +1,10 @@
+from enum import unique
 from inspect import Attribute
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, EmailField, TelField, DateField, SelectField
-from wtforms.validators import data_required,input_required
+from wtforms import StringField, PasswordField, SubmitField, EmailField, TelField, DateField, SelectField, BooleanField, ValidationError
+from wtforms.validators import data_required,input_required, equal_to, length, email_validator
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from cs50 import SQL
@@ -30,7 +31,7 @@ class users(db.Model):
     belt = db.Column(db.String(50), nullable=False)
     degree = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    phone = db.Column(db.String(50), nullable=False)
+    phone = db.Column(db.String(50), nullable=False, unique=True)
     username =  db.Column(db.String(25), nullable=False, unique=True)
     #Hashing password
     password_hash = db.Column(db.String(), nullable=False)
@@ -64,7 +65,8 @@ class register_form(FlaskForm):
     email = EmailField("What is your email?", validators=[data_required()])
     phone = TelField("What is your phone number?", validators=[data_required()])
     username = StringField("Create an Username", validators=[data_required()])
-    password = PasswordField("Enter your password", validators=[data_required()])
+    password_hash = PasswordField("Create a password", validators=[data_required(), equal_to('password_hash_val', message='Passwords must match!')])
+    password_hash_val = PasswordField("Confirm your password", validators=[data_required(), equal_to('password_hash', message='Passwords must match!')])
     submit = SubmitField("Register")
 
 
