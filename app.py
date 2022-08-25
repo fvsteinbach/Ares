@@ -102,7 +102,8 @@ def update(id):
     if request.method == 'POST':
         name_update.first_name = request.form['first_name']
         name_update.last_name = request.form['last_name']
-        name_update.birthdate = request.form['birthdate']
+        date_birthdate = request.form['birthdate']
+        name_update.birthdate = datetime.strptime(f'{date_birthdate}', '%Y-%m-%d').date()
         name_update.belt = request.form['belt']
         name_update.degree = request.form['degree']
         name_update.email = request.form['email']
