@@ -119,6 +119,7 @@ def profile():
     form = register_form()
     return render_template("profile.html", form=form)
 
+#Route to update an existing user
 @app.route("/update/<int:id>", methods=['POST', 'GET'])
 def update(id):
     form = register_form()
