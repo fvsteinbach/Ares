@@ -74,6 +74,7 @@ class register_form(FlaskForm):
 def index():
     return render_template("index.html")
 
+#Login page
 @app.route("/login")
 def login():
     return render_template("login.html")
