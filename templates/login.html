@@ -2,6 +2,34 @@
 
 {% block body %}
 
-    <h1>LOGIN</h1>
+    <br>
+    <div class="container w-25 p-3 shadow p-3 mb-5 bg-body rounded">
+        <br/> <center><h1>LOGIN</h1></center>
+        <form method="POST" action="/profile" id="login_form">
+
+            {{ form.hidden_tag() }}
+
+
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", placeholder="Enter your username") }}
+            <br>
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control", placeholder="Enter your password") }}
+            <br/>
+
+            <center>
+                {{ form.submit(class="btn btn-primary") }}
+            </center>
+            </form>
+
+            <center>
+                <br/><a href="/signup"> <button class="btn btn-primary">Sign up</button> </a>
+            </center>
+        
+        </div>
+
+
+
+
 
 {% endblock %}

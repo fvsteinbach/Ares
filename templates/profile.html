@@ -2,16 +2,14 @@
 
 {% block body %}
 
-    {% for message in get_flashed_messages() %}
+<br>
+<div class="container shadow p-3 mb-5 bg-body rounded">
 
-    <div class="alert alert-success alert-dismissible show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+    <h1>Hello, {{ user.first_name }} {{ user.last_name }} </h1>
+    <h1>{{ user.belt }} {{ user.degree }} </h1>
+    <h1>{{ user.phone }} </h1>
+    <h1>{{ user.email }} </h1>
 
-    {% endfor %}
+  </div>
 
-    <h1>Hello, {{ form.first_name.data }} </h1>
-    
-
-{% endblock %}
+  {% endblock %}

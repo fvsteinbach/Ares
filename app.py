@@ -1,5 +1,3 @@
-from enum import unique
-from inspect import Attribute
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -15,12 +13,22 @@ DEGREES = ["No degree","I", "II", "III", "IV"]
 
 #Configure app
 app = Flask(__name__)
+
 #Add database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
 #Secret key
 app.config["SECRET_KEY"] = "fuckthissecretkey"
+
 #Initialize the database
 db = SQLAlchemy(app)
+
+#Configure session
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_TYPE'] = "filesystem"
+Session(app)
+
+
 
 #Create a model
 class users(db.Model):
@@ -70,6 +78,13 @@ class register_form(FlaskForm):
     submit = SubmitField("Register")
 
 
+#Create a login Form
+class login_form(FlaskForm):
+    username = StringField("What is your username?", validators=[data_required()])
+    password = PasswordField("What is your password?", validators=[data_required()])
+    submit = SubmitField("Login")
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
@@ -77,7 +92,8 @@ def index():
 #Login page
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    form = login_form()
+    return render_template("login.html", form=form)
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -116,9 +132,12 @@ def register():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-    flash("Form submited successfully!")
-    form = register_form()
-    return render_template("profile.html", form=form)
+    form = login_form()
+    username = form.username.data
+    user = users.query.filter_by(username = username).first()
+    if user:
+        return render_template("profile.html", form=form, user=user)
+    return redirect('/login')
 
 #Route to update an existing user
 @app.route("/update/<int:id>", methods=['POST', 'GET'])
