@@ -7,6 +7,7 @@ from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from cs50 import SQL
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 BELTS = ["No belt", "White", "Blue", "Purple", "Brown", "Black"]
 DEGREES = ["No degree","I", "II", "III", "IV"]
@@ -31,7 +32,7 @@ Session(app)
 
 
 #Create a model
-class users(db.Model):
+class users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
