@@ -132,11 +132,26 @@ def register():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
+    passed = None
+    password_check = None
+    password = None
     form = login_form()
-    username = form.username.data
-    user = users.query.filter_by(username = username).first()
-    if user:
-        return render_template("profile.html", form=form, user=user)
+
+    #Validate form
+    if form.validate_on_submit():
+        username = form.username.data
+        user = users.query.filter_by(username = username).first()
+        #Checks if theres an user with the username inputed
+        if user:
+            password_check = form.password.data
+            #Clear the form
+            form.username.data = ''
+            form.password.data = ''
+            #Check hashed password
+            passed = check_password_hash(user.password_hash, password_check)
+            if passed == True:
+                return render_template("profile.html", form=form, user=user)
+    flash("incorrect user/passsword")
     return redirect('/login')
 
 #Route to update an existing user
