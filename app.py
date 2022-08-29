@@ -1,3 +1,4 @@
+from math import degrees
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -24,10 +25,14 @@ app.config["SECRET_KEY"] = "fuckthissecretkey"
 #Initialize the database
 db = SQLAlchemy(app)
 
-#Configure session
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_TYPE'] = "filesystem"
-Session(app)
+#Flask_login   
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return users.query.get(int(user_id))
 
 
 
@@ -94,7 +99,33 @@ def index():
 @app.route("/login")
 def login():
     form = login_form()
+    if form.validate_on_submit():
+        user = users.query.filter_by(username=form.username.data).first()
+        #Checks if theres an user with the username inputed
+        if user:
+            password_check = form.password.data
+            #Clear the form
+            form.username.data = ''
+            form.password.data = ''
+            #Check hashed password
+            if check_password_hash(user.password_hash, password_check):
+                login_user(user)
+                flash("Login successfully!")
+                return redirect("/profile", form=form, user=user)
+            else:
+                flash("Wrong password")
+        else:
+            flash("That username does not exist, try again")
     return render_template("login.html", form=form)
+
+#Create logout page
+@app.route('/logout', methods=["POST", "GET"])
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out!")
+    return redirect("/login")
+
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -137,7 +168,6 @@ def profile():
     password_check = None
     password = None
     form = login_form()
-
     #Validate form
     if form.validate_on_submit():
         username = form.username.data
@@ -186,6 +216,7 @@ def error():
     return render_template("error.html")
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     our_users = users.query.order_by(users.date_added)
     return render_template("dashboard.html", our_users=our_users)
