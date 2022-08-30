@@ -1,4 +1,3 @@
-from math import degrees
 from flask import Flask, request, render_template, redirect, session, flash
 from datetime import date, datetime
 from flask_wtf import FlaskForm
@@ -96,7 +95,7 @@ def index():
     return render_template("index.html")
 
 #Login page
-@app.route("/login")
+@app.route("/login", methods=['POST', 'GET'])
 def login():
     form = login_form()
     if form.validate_on_submit():
@@ -164,26 +163,9 @@ def register():
 
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
-    passed = None
-    password_check = None
-    password = None
     form = login_form()
-    #Validate form
-    if form.validate_on_submit():
-        username = form.username.data
-        user = users.query.filter_by(username = username).first()
-        #Checks if theres an user with the username inputed
-        if user:
-            password_check = form.password.data
-            #Clear the form
-            form.username.data = ''
-            form.password.data = ''
-            #Check hashed password
-            passed = check_password_hash(user.password_hash, password_check)
-            if passed == True:
-                return render_template("profile.html", form=form, user=user)
-    flash("incorrect user/passsword")
-    return redirect('/login')
+    user = users.query.filter_by(username = form.username.data)
+    return render_template("profile.html", form=form, user=user)
 
 #Route to update an existing user
 @app.route("/update/<int:id>", methods=['POST', 'GET'])
@@ -215,7 +197,7 @@ def update(id):
 def error():
     return render_template("error.html")
 
-@app.route("/dashboard")
+@app.route("/dashboard", methods=['GET', 'POST'])
 @login_required
 def dashboard():
     our_users = users.query.order_by(users.date_added)
