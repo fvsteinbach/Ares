@@ -190,6 +190,7 @@ def dashboard():
     our_users = users.query.order_by(users.date_added)
     return render_template("dashboard.html", our_users=our_users)
 
+#Remove user
 @app.route("/deregister/<int:id>", methods=["POST"])
 def deregister(id):
     user_delete = users.query.get_or_404(id)
