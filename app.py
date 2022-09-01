@@ -160,6 +160,7 @@ def register():
     our_users = users.query.order_by(users.date_added)   
     return redirect("/dashboard", our_users)
 
+#Route to the profile page
 @app.route("/profile", methods=["POST", "GET"])
 def profile():
     form = login_form()
