@@ -176,6 +176,7 @@ def update(id):
         name_update.first_name = request.form['first_name']
         name_update.last_name = request.form['last_name']
         date_birthdate = request.form['birthdate']
+        #Makes converts the old date back to string (when imported from the database it becomes a strin so it needs to be converted)
         name_update.birthdate = datetime.strptime(f'{date_birthdate}', '%Y-%m-%d').date()
         name_update.belt = request.form['belt']
         name_update.degree = request.form['degree']
