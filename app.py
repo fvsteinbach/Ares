@@ -198,6 +198,7 @@ def update(id):
 def error():
     return render_template("error.html")
 
+#DASHBOARD ROUTE
 @app.route("/dashboard", methods=['GET', 'POST'])
 @login_required
 def dashboard():
