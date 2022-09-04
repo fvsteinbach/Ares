@@ -130,6 +130,7 @@ def signup():
     form = register_form()
     return render_template("signup.html", first_name=form.first_name.data, form=form, belt=form.belt.data, last_name=form.last_name.data, birthdate=form.birthdate.data, degree=form.degree.data, email=form.email.data, phone=form.phone.data, username=form.username.data, password_hash=form.password_hash.data)
 
+#Register route
 @app.route("/register", methods=["POST", "GET"])
 def register():
     first_name = None
