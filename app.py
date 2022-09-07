@@ -124,7 +124,7 @@ def logout():
     flash("You have been logged out!")
     return redirect("/login")
 
-#Signup route
+#
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     form = register_form()
@@ -206,6 +206,7 @@ def dashboard():
     our_users = users.query.order_by(users.date_added)
     return render_template("dashboard.html", our_users=our_users)
 
+#Deregister route
 @app.route("/deregister/<int:id>", methods=["POST"])
 def deregister(id):
     user_delete = users.query.get_or_404(id)
