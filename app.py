@@ -195,6 +195,7 @@ def update(id):
             return render_template("update.html", form=form, name_update=name_update)
     return render_template("update.html", form=form, name_update=name_update)
 
+#Error route
 @app.route("/error")
 def error():
     return render_template("error.html")
