@@ -124,7 +124,7 @@ def logout():
     flash("You have been logged out!")
     return redirect("/login")
 
-#
+#signup route
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     form = register_form()
