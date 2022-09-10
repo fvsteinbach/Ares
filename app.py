@@ -88,7 +88,7 @@ class login_form(FlaskForm):
     password = PasswordField("What is your password?", validators=[data_required()])
     submit = SubmitField("Login")
 
-#Homepage
+#Homepage route
 @app.route("/", methods=["GET", "POST"])
 def index():
     return render_template("index.html")
