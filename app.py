@@ -28,10 +28,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+#Login manager setup
 @login_manager.user_loader
 def load_user(user_id):
     return users.query.get(int(user_id))
 
+#I quit, I hate programming
 
 
 #Create a model
