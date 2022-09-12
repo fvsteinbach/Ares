@@ -147,6 +147,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             print(hashed_pw)
+        #Cleaning up the form
         first_name = form.first_name.data
         form.first_name.data = ''
         form.last_name.data  = ''
