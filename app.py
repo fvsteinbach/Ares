@@ -112,6 +112,7 @@ def login():
                 login_user(user)
                 flash("Login successfully!")
                 return redirect("/profile", form=form, user=user)
+            #Error handling
             else:
                 flash("Wrong password")
         else:
