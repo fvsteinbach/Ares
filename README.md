@@ -2,6 +2,6 @@
  Crud app to manage students of a bjj academy
 
 #Requirements
-Flask
+<br>Flask
 Flask login
 SQLite
