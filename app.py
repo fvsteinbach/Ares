@@ -116,16 +116,6 @@ def register():
             db.session.commit()
             print(hashed_pw)
         first_name = form.first_name.data
-        form.first_name.data = ''
-        form.last_name.data  = ''
-        form.birthdate.data = ''
-        form.belt.data = ''
-        form.degree.data = ''
-        form.email.data = ''
-        form.phone.data = ''
-        form.username.data = ''
-        form.password_hash.data = ''
-        form.password_hash_val.data = ''
         flash("User created successfully")
         return render_template("profile.html", form=form, user=user, first_name=first_name)
     our_users = users.query.order_by(users.date_added)   
