@@ -1,7 +1,7 @@
 # Ares
  Crud app to manage students of a bjj academy
 
-#Requirements
+# Requirements
 <br>Flask
 <br>Flask login
 <br>SQLite
